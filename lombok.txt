@@ -1,0 +1,1 @@
+curl -L -o /home/james/.local/share/nvim/mason/share/jdtls/lombok.jar https://projectlombok.org/downloads/lombok.jar

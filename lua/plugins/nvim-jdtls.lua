@@ -152,7 +152,13 @@ return {
     }
 
     config["on_attach"] = function(client, bufnr)
+      local jdtls = require("jdtls")
+      -- This sets up DAP integration
       jdtls.setup_dap({ hotcodereplace = "auto" })
+
+      -- THIS IS THE CRITICAL LINE THAT CREATES THE "ATTACH" MENU
+      -- It registers all the default Java configurations,
+      -- including "Launch" AND "Attach to Process".
       require("jdtls.dap").setup_dap_main_class_configs()
     end
 
