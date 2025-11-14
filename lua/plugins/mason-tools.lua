@@ -13,13 +13,9 @@ return {
         "json-lsp", -- Fixed: was "jsonls"
         "lemminx",
         "marksman",
-        "quick-lint-js", -- Fixed: was "quick_lint_js"
         "yaml-language-server", -- Fixed: was "yamlls"
         "pyright",
         "black",
-        "css-lsp",
-        "html-lsp",
-        "prettier",
         "shfmt",
         "stylua",
         "java-debug-adapter",
