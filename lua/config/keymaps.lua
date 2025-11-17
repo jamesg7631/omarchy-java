@@ -28,3 +28,21 @@ vim.keymap.set({ "n", "t" }, "<C-\\>", function()
 end, { desc = "Terminal" })
 
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Escape terminal mode" })
+
+-- Spring
+-- Search Spring Beans, Endpoints, etc. using snacks.nvim
+vim.keymap.set("n", "<leader>zb", function()
+  require("snacks").picker({
+    source = "lsp_workspace_symbols",
+    prompt = "Spring Beans & Endpoints",
+    query = "@Bean", -- optional: pre-fill with @Bean
+  })
+end, { desc = "Search Spring @Bean" })
+
+-- General LSP symbols (includes Spring stuff)
+vim.keymap.set("n", "<leader>zs", function()
+  require("snacks").picker({
+    source = "lsp_workspace_symbols",
+    prompt = "LSP Symbols",
+  })
+end, { desc = "LSP Workspace Symbols" })
