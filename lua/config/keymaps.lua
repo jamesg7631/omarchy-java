@@ -46,3 +46,10 @@ vim.keymap.set("n", "<leader>zs", function()
     prompt = "LSP Symbols",
   })
 end, { desc = "LSP Workspace Symbols" })
+
+-- 3. Seamless Window Navigation
+-- Jump from Terminal to Code using Ctrl + h/j/k/l
+vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to Left" })
+vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to Lower" })
+vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to Upper" })
+vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to Right" })
