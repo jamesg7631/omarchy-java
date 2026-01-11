@@ -2,9 +2,10 @@ return {
   {
     "folke/noice.nvim",
     opts = function(_, opts)
+      -- Ensure routes table exists
       opts.routes = opts.routes or {}
 
-      -- 1. Filter the "Spammy" Notifications (from the previous step)
+      -- 1. SILENCE STARTUP NOTIFICATIONS (Top Right)
       table.insert(opts.routes, {
         filter = {
           event = "notify",
@@ -17,22 +18,16 @@ return {
         opts = { skip = true },
       })
 
-      -- 2. Filter the "Validating" Progress (The bottom-right popup)
+      -- 2. SILENCE TYPING/PROGRESS NOTIFICATIONS (Bottom Right)
       table.insert(opts.routes, {
         filter = {
           event = "lsp",
           kind = "progress",
-          find = "Validating", -- Matches "Validating diagnostics"
-        },
-        opts = { skip = true },
-      })
-
-      -- Optional: If "Publishing" also shows up separately, filter that too
-      table.insert(opts.routes, {
-        filter = {
-          event = "lsp",
-          kind = "progress",
-          find = "Publish",
+          any = {
+            { find = "Validate" },  -- Catches "Validate documents" AND "Validating diagnostics"
+            { find = "Publish" },   -- Catches "Publish Diagnostics"
+            { find = "Compiling" }, -- Catches "Compiling"
+          },
         },
         opts = { skip = true },
       })
