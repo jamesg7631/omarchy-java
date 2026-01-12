@@ -153,6 +153,7 @@ local config = {
 
 -- === ON_ATTACH: DAP with proper source mapping ===
 config.on_attach = function(client, bufnr)
+  client.server_capabilities.semanticTokensProvider = nil
   -- This will be called for each buffer
   jdtls.setup_dap({ hotcodereplace = "auto" })
 
