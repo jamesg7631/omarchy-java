@@ -31,7 +31,8 @@ return {
       vim.tbl_deep_extend("force", opts.servers or {}, {
         -- CHANGE 2: Removed tsserver/ts_ls and added vtsls configuration
         vtsls = {
-          -- This setting is crucial for JS/TS code actions to work reliably
+          -- This ensures the server knows it's a JS project
+          single_file_support = true,
           settings = {
             vtsls = {
               autoUseWorkspaceTsdk = true,
@@ -43,6 +44,10 @@ return {
             },
             typescript = {
               updateImportsOnFileMove = { enabled = "always" },
+              -- === NEW CODE LENS SETTINGS START ===
+              referencesCodeLens = { enabled = true, showOnAllFunctions = true },
+              implementationsCodeLens = { enabled = true },
+              -- === NEW CODE LENS SETTINGS END ===
               inlayHints = {
                 parameterNames = { enabled = "literals" },
                 parameterTypes = { enabled = true },
