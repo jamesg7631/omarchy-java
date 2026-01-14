@@ -20,6 +20,7 @@ return {
         "html-lsp",
         "eslint-lsp",
         "prettierd",
+        "emmet-language-server",
       })
     end,
   },
@@ -58,6 +59,12 @@ return {
         cssls = {},
         html = {},
         eslint = {},
+        emmet_language_server = {
+          filetypes = {
+            "css", "html", "javascriptreact", "typescriptreact",
+            "less", "sass", "scss", "vue", "svelte"
+          },
+        },
       })
     end,
   },

@@ -2,8 +2,9 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function()
-      -- Refresh Code Lens when moving cursor or leaving insert mode
-      vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+      -- Refresh Code Lens only when entering a buffer, leaving insert mode, or saving.
+      -- Removed "CursorHold" to eliminate flickering.
+      vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost" }, {
         callback = function()
           vim.lsp.codelens.refresh({ bufnr = 0 })
         end,
