@@ -1,4 +1,13 @@
 -- /home/james/.config/nvim/ftplugin/java.lua
+
+-- === INTELLIJ INDENTATION SETTINGS ===
+vim.opt_local.expandtab = true                             -- Use spaces instead of tabs
+vim.opt_local.shiftwidth = 4                               -- Size of an indent
+vim.opt_local.tabstop = 4                                  -- Number of spaces tabs count for
+vim.opt_local.softtabstop = 4                              -- Insert 4 spaces when hitting TAB
+vim.opt_local.cinoptions = vim.opt_local.cinoptions + "+8" -- IntelliJ continuation indent
+-- =====================================
+
 -- === DEBUG STEP 1: See if this file is running ===
 vim.notify("JDTLS ftplugin: Executing for " .. vim.api.nvim_buf_get_name(0), vim.log.levels.INFO, { title = "JDTLS" })
 
@@ -31,19 +40,15 @@ if root_dir == nil or root_dir == "" then
     vim.log.levels.WARN,
     { title = "JDTLS" }
   )
-  -- Attempt to attach in single-file mode
   root_dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h")
 end
 
--- === Your Original Configuration Starts Here ===
-
 local project_name = vim.fn.fnamemodify(root_dir, ":t")
 local workspace_dir = home .. "/jdtls-workspace/" .. project_name
-
 local system_os = vim.fn.has("mac") == 1 and "mac" or vim.fn.has("win32") == 1 and "win" or "linux"
 local mason = home .. "/.local/share/nvim/mason/packages"
 
--- === BUNDLES (skip problematic JARs) ===
+-- === BUNDLES ===
 local bundles = {
   vim.fn.glob(mason .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", true),
 }
@@ -58,13 +63,11 @@ if test_jars ~= "" then
   end
 end
 
--- === ADDITION 2: Add Spring Boot extensions to bundles ===
 if spring_boot_ok then
   vim.notify("JDTLS ftplugin: Loading spring-boot.nvim extensions", vim.log.levels.INFO, { title = "JDTLS" })
   local spring_boot_extensions = spring_boot.java_extensions()
   vim.list_extend(bundles, spring_boot_extensions)
 end
--- ========================================================
 
 local config = {
   cmd = {
@@ -89,12 +92,23 @@ local config = {
     workspace_dir,
   },
 
-  root_dir = root_dir, -- Use the dynamically found root_dir
+  root_dir = root_dir,
 
   settings = {
     java = {
       home = "/usr/lib/jvm/java-25-openjdk/",
       eclipse = { downloadSources = true },
+
+      -- === FIXED FORMAT SECTION ===
+      format = {
+        enabled = true,
+        settings = {
+          url = vim.fn.stdpath("config") .. "/java-style.xml",
+          profile = "IntelliJ Style",
+        },
+      },
+      -- ============================
+
       configuration = {
         updateBuildConfiguration = "interactive",
         runtimes = {
@@ -106,7 +120,7 @@ local config = {
       spring = { boot = { enabled = true } },
 
       project = {
-        outputPath = "target/classes", -- Maven
+        outputPath = "target/classes",
       },
 
       sourcePaths = {
@@ -114,12 +128,13 @@ local config = {
         "src/test/java",
       },
 
-      -- Rest of your settings...
       implementationsCodeLens = { enabled = true },
       referencesCodeLens = { enabled = true },
       references = { includeDecompiledSources = true },
       signatureHelp = { enabled = true },
-      format = { enabled = true },
+
+      -- REMOVED DUPLICATE 'format' KEY HERE
+
       completion = {
         favoriteStaticMembers = {
           "org.hamcrest.MatcherAssert.assertThat",
@@ -143,18 +158,14 @@ local config = {
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
   flags = { allow_incremental_sync = true },
 
-  -- *** THIS IS THE FIX ***
-  -- It was 'ind_options' before, which is a syntax error.
   init_options = {
-    bundles = bundles, -- This 'bundles' table now includes the Spring Boot ones
+    bundles = bundles,
     extendedClientCapabilities = jdtls.extendedClientCapabilities,
   },
 }
 
--- === ON_ATTACH: DAP with proper source mapping ===
 config.on_attach = function(client, bufnr)
   client.server_capabilities.semanticTokensProvider = nil
-  -- This will be called for each buffer
   jdtls.setup_dap({ hotcodereplace = "auto" })
 
   require("jdtls.dap").setup_dap_main_class_configs({
@@ -178,6 +189,10 @@ config.on_attach = function(client, bufnr)
   end, opts)
 end
 
--- This is the final, most important call.
--- This will run every time you open a java file.
 jdtls.start_or_attach(config)
+
+-- Register the "Java" key group only for this buffer
+local wk = require("which-key")
+wk.add({
+  { "<leader>j", group = "java", buffer = vim.api.nvim_get_current_buf() },
+})

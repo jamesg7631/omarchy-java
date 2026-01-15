@@ -53,3 +53,19 @@ vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to Left" })
 vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to Lower" })
 vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to Upper" })
 vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to Right" })
+
+-- Check Maven Updates (Java)
+vim.keymap.set("n", "<leader>nu", function()
+  local cmd = "mvn versions:display-dependency-updates"
+  -- Notify user it started
+  vim.notify("Checking for Maven updates... (this may take a moment)", vim.log.levels.INFO, { title = "Maven" })
+  -- Run command in a floating terminal or split
+  -- Using snacks.terminal (since you have snacks.nvim) is the cleanest way:
+  require("snacks").terminal(cmd, {
+    win = {
+      style = "float",
+      position = "float",
+    },
+    interactive = false, -- Close when done (optional, set to true to keep open)
+  })
+end, { desc = "Check Maven Updates" })
