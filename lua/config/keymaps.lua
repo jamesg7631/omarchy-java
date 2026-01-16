@@ -55,7 +55,7 @@ vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to Upper" })
 vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to Right" })
 
 -- Check Maven Updates (Java)
-vim.keymap.set("n", "<leader>nu", function()
+vim.keymap.set("n", "<leader>mu", function()
   local cmd = "mvn versions:display-dependency-updates"
   -- Notify user it started
   vim.notify("Checking for Maven updates... (this may take a moment)", vim.log.levels.INFO, { title = "Maven" })

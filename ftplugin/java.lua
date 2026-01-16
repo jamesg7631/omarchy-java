@@ -30,7 +30,7 @@ if not jdtls then
 end
 
 -- === DEBUG STEP 2: See what root_dir is found ===
-local root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
+local root_dir = require("jdtls.setup").find_root({ "mvnw", "gradlew", "pom.xml", "build.gradle" })
 
 vim.notify("JDTLS ftplugin: Found root_dir: " .. tostring(root_dir), vim.log.levels.INFO, { title = "JDTLS" })
 
@@ -110,7 +110,7 @@ local config = {
       -- ============================
 
       configuration = {
-        updateBuildConfiguration = "interactive",
+        updateBuildConfiguration = "automatic",
         runtimes = {
           { name = "JavaSE-21", path = "/home/james/.sdkman/candidates/java/21.0.8-tem/" },
           { name = "JavaSE-25", path = "/usr/lib/jvm/java-25-openjdk/" },
