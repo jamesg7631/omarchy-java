@@ -2,6 +2,14 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 --
+
+local wk = require("which-key")
+wk.add({
+  { "<leader>m", group = "Maven", icon = " " }, -- The "M" box icon or feathered icon
+  { "<leader>z", group = "Spring/LSP", icon = "🍃" }, -- The Spring leaf (uses an emoji or Nerd Font leaf)
+  { "<leader>j", group = "Java", icon = " " }, -- The classic Java coffee cup icon
+})
+
 vim.keymap.set("i", "<S-Tab>", "<C-d>", { desc = "Dedent line" })
 vim.keymap.set("n", "<S-Tab>", "<<", { desc = "Dedent line" })
 vim.keymap.set("v", "<S-Tab>", "<gv", { desc = "Dedent selection" })
