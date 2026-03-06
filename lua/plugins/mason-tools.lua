@@ -8,9 +8,9 @@ return {
         -- Your list, now with all correct package names
         "debugpy",
         "groovy-language-server", -- Fixed: was "groovyls"
-        "lua-language-server", -- Fixed: was "lua_ls"
+        "lua-language-server",    -- Fixed: was "lua_ls"
         "jdtls",
-        "json-lsp", -- Fixed: was "jsonls"
+        "json-lsp",               -- Fixed: was "jsonls"
         "lemminx",
         "marksman",
         "yaml-language-server", -- Fixed: was "yamlls"
